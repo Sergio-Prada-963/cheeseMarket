@@ -5,7 +5,7 @@ const UsuariosSchema = Schema({
     email:{type:String,required:[true,'email is required'],unique:true},
     password:{type:String,required:[true,'password is required']},
     imagen:{type:String},
-    rol:{type:String,required:true,default:'USER',enum:['ADMIN','USER']},
+    rol:{type:String,required:true,default:'USER'},
     estado:{type:Boolean,default:true},
     googleSignIn:{type:Boolean,default:true}
 })

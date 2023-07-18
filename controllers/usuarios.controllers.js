@@ -9,6 +9,7 @@ const obtenerUsuarios = async(req,res)=>{
     }
 }
 const agregarUsuarios = async (req,res)=>{
+
     const {nombre, email, password, rol} = req.body;
     const usuario = new Usuario({nombre, email, password, rol});
 
