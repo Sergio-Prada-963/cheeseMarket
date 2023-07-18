@@ -1,4 +1,5 @@
 const Usuario = require('../models/usuarios.js');
+const bcryptjs = require('bcryptjs');
 const obtenerUsuarios = async(req,res)=>{
     try {
         const usuario = await Usuario.find();
@@ -8,13 +9,21 @@ const obtenerUsuarios = async(req,res)=>{
     }
 }
 const agregarUsuarios = async (req,res)=>{
-    const usuarios = new Usuario(req.body);
-    try {
-        const newUsuario = await usuarios.save();
-        res.json(newUsuario);
-    } catch (error) {
-        console.log(error);
-    }
+    const {nombre, email, password, rol} = req.body;
+    const usuario = new Usuario({nombre, email, password, rol});
+
+    //Verificar si el correo y aexiste
+    const existeEmail = await Usuario.findOne({email});
+    if(existeEmail)
+        return res.status(400).json({
+            message: "Email alreadi exist"
+        })
+
+    //encriptar la contraseña
+    const salt = bcryptjs.genSaltSync();
+    usuario.password = bcryptjs.hashSync(password, salt);
+    await usuario.save();
+    res.json(usuario);
 }
 const deleteUsuario = async (req,res)=>{
     try {
