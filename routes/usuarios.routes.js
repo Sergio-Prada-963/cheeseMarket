@@ -8,7 +8,6 @@ const { isValidRole, emailExiste, userExistsById } = require('../helpers/db.vali
 const {obtenerUsuarios, agregarUsuarios, deleteUsuario, updateUsuario, putUsuarios} = require('../controllers/usuarios.controllers.js');
 
 const router = Router();
-const roles = require('../models/role.js') 
 router.get("/",obtenerUsuarios);
 
 router.post("/",[

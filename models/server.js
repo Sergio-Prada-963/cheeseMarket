@@ -5,23 +5,27 @@ class Server {
     constructor(){
         this.app = express();
         this.port = process.env.PORT
-        this.usuariosPath = "/api/usuarios";
-        this.authPath = "/api/auth"
-        this.middlewares();
+        this.paths = {
+            authPath: '/api/auth',
+            categoriasPath: '/api/categorias',
+            usuariosPath: '/api/usuarios'
+        }
+        /* this.middlewares(); */
         this.conexion();
         this.routes();
     }
-    middlewares(){
+    /* middlewares(){
         this.app.use(cors());
         this.app.use(express.json())
         this.app.use(express.static('public'));
-    }
+    } */
     async conexion(){
         await dbConection();
     }
     routes(){
-        this.app.use(this.usuariosPath,require('../routes/usuarios.routes.js'))
-        this.app.use(this.authPath,require('../routes/auth.routes.js'))
+        this.app.use(this.paths.authPath,require('../routes/usuarios.routes.js'))
+        this.app.use(this.paths.categoriasPath,require('../routes/categoria.routes.js'))
+        this.app.use(this.paths.usuariosPath,require('../routes/auth.routes.js'))
     }
     listen(){
         this.app.listen(this.port,()=>{
