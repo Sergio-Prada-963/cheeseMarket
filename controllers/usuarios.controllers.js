@@ -36,6 +36,19 @@ const deleteUsuario = async (req,res)=>{
         res.send({error: "usuario no eliminado"})
     }
 }
+const putUsuarios = async (req, res)=>{
+    const { id } = req.params;
+    const { _id, password, googleSignIn, ...resto } = req.body;
+    if ( password ) {
+        const salt = bcryptjs.genSaltSync();
+        resto.password = bcryptjs.hashSync( password, salt );
+    }
+    const usuario = await Usuario.findByIdAndUpdate( id, resto );
+    res.json({
+        msg:"Usuario Actualizado",
+        usuario : usuario
+    });
+}
 const updateUsuario = async(req,res) =>{
     try {
         const usuario = await Usuario.findOneAndUpdate({_id: req.params.id},req.body,{new:true});
@@ -45,4 +58,4 @@ const updateUsuario = async(req,res) =>{
         res.status(333)
     }
 }
-module.exports = {obtenerUsuarios, agregarUsuarios, deleteUsuario, updateUsuario};
+module.exports = {obtenerUsuarios, agregarUsuarios, deleteUsuario, putUsuarios, updateUsuario};
